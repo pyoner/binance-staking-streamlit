@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "binance-staking"
+version = "0.1.0"
+description = ""
+authors = ["Askar Yusupov <devex.soft@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+streamlit = "^0.82.0"
+requests = "^2.25.1"
+pydantic = "^1.8.2"
+tabulate = "^0.8.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+autopep8 = "^1.5.7"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
