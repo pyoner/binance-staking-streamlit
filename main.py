@@ -30,7 +30,7 @@ if address:
     rewards = get_delegator_rewards(address)
     rewards_df = pd.DataFrame.from_records(
         [r.dict() for r in rewards.rewards])
-    st.dataframe(rewards_df)
+    st.dataframe(rewards_df[['reward', 'val_name', 'time']])
 
 
 st.header('Validators')
