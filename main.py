@@ -37,7 +37,29 @@ if address:
     rewards = get_delegator_rewards(address)
     rewards_df = pd.DataFrame.from_records(
         [r.dict() for r in rewards.rewards])
-    st.dataframe(rewards_df[['reward', 'val_name', 'time']])
+    if len(rewards_df):
+        st.vega_lite_chart(rewards_df, {
+            'mark': {
+                'type': 'line',
+            },
+            'encoding': {
+                'x': {
+                    'field': 'time',
+                    'timeUnit': 'yearmonthdate',
+                    'title': 'date'
+                },
+                'y': {
+                    'field': 'reward',
+                    # 'aggregate': 'sum',
+                    'type': 'quantitative',
+                },
+                'color': {
+                    'field': 'val_name',
+                    'type': 'nominal',
+                }
+            },
+        }, use_container_width=True)
+        st.dataframe(rewards_df[['reward', 'val_name', 'time']])
 
 
 st.header('Validators')
