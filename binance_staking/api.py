@@ -1,7 +1,7 @@
 import requests
 import pydantic
 
-from .models import Balance, Operations, Validators
+from .models import Balance, Operations, Rewards, Validators
 
 BASE_URL = 'https://api.binance.org'
 
@@ -32,3 +32,11 @@ def get_operations_by_delegator(delegator: str, offset: int = 0, limit: int = 10
             f'{BASE_URL}/v1/staking/chains/{chain_id}/delegators/{delegator}/operations',
             params={'offset': offset, 'limit': limit}),
         Operations)
+
+
+def get_delegator_rewards(delegator: str, offset: int = 0, limit: int = 100, chain_id: str = 'bsc') -> Rewards:
+    return reponse_to_model(
+        requests.get(f'{BASE_URL}/v1/staking/chains/{chain_id}/delegators/{delegator}/rewards',
+                     params={'offset': offset, 'limit': limit}),
+        Rewards
+    )

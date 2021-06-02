@@ -1,11 +1,10 @@
 import streamlit as st
-import streamlit.report_thread as report_thread
 # To make things easier later, we're also importing numpy and pandas for
 # working with sample data.
 import numpy as np
 import pandas as pd
 
-from binance_staking.api import get_balance, get_operations_by_delegator, get_validators
+from binance_staking.api import get_balance, get_delegator_rewards, get_operations_by_delegator, get_validators
 
 st.title('Binance Staking App')
 
@@ -24,7 +23,15 @@ if address:
     ops_df = pd.DataFrame.from_records([op.dict() for op in ops.operations])
     st.dataframe(
         ops_df[['amount', 'operation_type', 'val_name', 'src_val_name', 'time', 'tx_hash']])
-    # st.dataframe(ops_df)
+
+    # rewards
+    st.header('Rewards')
+    st.write('Last 100 rewards')
+    rewards = get_delegator_rewards(address)
+    rewards_df = pd.DataFrame.from_records(
+        [r.dict() for r in rewards.rewards])
+    st.dataframe(rewards_df)
+
 
 st.header('Validators')
 st.write('''Binance Smart Chain relies on a set of validators who are responsible

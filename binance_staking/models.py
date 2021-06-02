@@ -58,3 +58,18 @@ class Operation(BaseModel):
 class Operations(BaseModel):
     total: int
     operations: List[Operation]
+
+
+class Reward(BaseModel):
+    chain_id: str = Field(alias='chainId')
+    delegator: str
+    height: int
+    reward: float
+    time: datetime = Field(alias='rewardTime')
+    val_name: str = Field(alias='valName')
+    validator: str
+
+
+class Rewards(BaseModel):
+    total: int
+    rewards: List[Reward] = Field(alias='rewardDetails')
