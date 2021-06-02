@@ -8,7 +8,9 @@ from binance_staking.api import get_balance, get_delegator_rewards, get_operatio
 
 st.title('Binance Staking App')
 
-address = st.text_input('Enter a wallet address')
+params = st.experimental_get_query_params()
+param_address = params.get('address', ['']).pop()
+address = st.text_input('Enter a wallet address', param_address)
 if address:
     st.header('Address')
     st.text(address)
