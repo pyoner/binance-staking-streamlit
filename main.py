@@ -10,7 +10,14 @@ st.title('Binance Staking App')
 
 params = st.experimental_get_query_params()
 param_address = params.get('address', ['']).pop()
-address = st.text_input('Enter a wallet address', param_address)
+address = st.text_input('Enter a wallet address')
+
+if address:
+    if address != param_address:
+        st.experimental_set_query_params(address=[address])
+else:
+    address = param_address
+
 if address:
     st.header('Address')
     st.text(address)
@@ -33,7 +40,6 @@ if address:
 
     # rewards
     st.header('Rewards')
-    st.write('Last 100 rewards')
     rewards = get_delegator_rewards(address)
     rewards_df = pd.DataFrame.from_records(
         [r.dict() for r in rewards.rewards])
@@ -59,6 +65,8 @@ if address:
                 }
             },
         }, use_container_width=True)
+
+        st.write('Last 100 rewards')
         st.dataframe(rewards_df[['reward', 'val_name', 'time']])
 
 
