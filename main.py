@@ -47,21 +47,33 @@ if address:
         [r.dict() for r in rewards.rewards])
     if len(rewards_df):
         ch = alt.Chart(rewards_df)
-        rewards_chart = ch.mark_line().encode(
+        rewards_chart = ch.mark_line(point=True).encode(
             alt.X(shorthand='time:T',
                   timeUnit='yearmonthdate', title='date'),
             alt.Y(shorthand='reward:Q'),
-            alt.Color(field='val_name', type='nominal', title='Validator')
+            alt.Color(field='val_name', type='nominal', title='Validator'),
+            tooltip=[
+                alt.Tooltip(shorthand='val_name:N', title='Validator'),
+                alt.Tooltip(shorthand='reward:Q')
+            ]
         )
 
-        total_rewards_chart = ch.mark_line().encode(
+        total_rewards_chart = ch.mark_circle(color='#ffba08').encode(
             alt.X(shorthand='time:T',
                   timeUnit='yearmonthdate', title='date'),
             alt.Y(shorthand='reward:Q', aggregate='sum'),
-            alt.StrokeDash(shorthand='reward:Q', aggregate='sum', legend=None)
+            tooltip=['sum(reward):Q']
         )
 
-        st.altair_chart(rewards_chart + total_rewards_chart, True)
+        mean_rewards_chart = ch.mark_circle(color='#e9edc9').encode(
+            alt.X(shorthand='time:T',
+                  timeUnit='yearmonthdate', title='date'),
+            alt.Y(shorthand='reward:Q', aggregate='mean'),
+            tooltip=['mean(reward):Q']
+        )
+
+        r_chart = rewards_chart + total_rewards_chart + mean_rewards_chart
+        st.altair_chart(r_chart, True)
 
         st.write('Last 100 rewards')
         st.dataframe(rewards_df[['reward', 'val_name', 'time']])
