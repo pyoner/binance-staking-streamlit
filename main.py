@@ -48,43 +48,44 @@ if address:
             'title': 'Validator Rewards',
             'layer': [
                {
-            'mark': {
-                'type': 'line',
-            },
-            'encoding': {
-                'x': {
-                    'field': 'time',
-                    'timeUnit': 'yearmonthdate',
-                    'title': 'date'
-                },
-                'y': {
-                    'field': 'reward',
-                    'type': 'quantitative',
-                },
-                'color': {
-                    'field': 'val_name',
-                    'type': 'nominal',
-                }
-            },
-               } ,{
-            'mark': {
-                'type': 'line',
-            },
-            'encoding': {
-                'x': {
-                    'field': 'time',
-                    'timeUnit': 'yearmonthdate',
-                    'title': 'date'
-                },
-                'y': {
-                    'field': 'reward',
-                    'aggregate': 'sum',
-                    'type': 'quantitative',
-                },
-                'color': {
-                    'field': 'total',
-                }
-            },
+                   'mark': {
+                       'type': 'line',
+                   },
+                   'encoding': {
+                       'x': {
+                           'field': 'time',
+                           'timeUnit': 'yearmonthdate',
+                           'title': 'date'
+                       },
+                       'y': {
+                           'field': 'reward',
+                           'type': 'quantitative',
+                       },
+
+                       'color': {
+                           'field': 'val_name',
+                           'type': 'nominal',
+                       }
+                   },
+               }, {
+                   'mark': {
+                       'type': 'line',
+                   },
+                   'encoding': {
+                       'x': {
+                           'field': 'time',
+                           'timeUnit': 'yearmonthdate',
+                           'title': 'date'
+                       },
+                       'y': {
+                           'field': 'reward',
+                           'aggregate': 'sum',
+                           'type': 'quantitative',
+                       },
+                       'color': {
+                           'field': 'total',
+                       }
+                   },
                }
             ]
         }
