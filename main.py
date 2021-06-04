@@ -44,7 +44,10 @@ if address:
     rewards_df = pd.DataFrame.from_records(
         [r.dict() for r in rewards.rewards])
     if len(rewards_df):
-        st.vega_lite_chart(rewards_df, {
+        spec = {
+            'title': 'Validator Rewards',
+            'layer': [
+               {
             'mark': {
                 'type': 'line',
             },
@@ -56,7 +59,6 @@ if address:
                 },
                 'y': {
                     'field': 'reward',
-                    # 'aggregate': 'sum',
                     'type': 'quantitative',
                 },
                 'color': {
@@ -64,7 +66,29 @@ if address:
                     'type': 'nominal',
                 }
             },
-        }, use_container_width=True)
+               } ,{
+            'mark': {
+                'type': 'line',
+            },
+            'encoding': {
+                'x': {
+                    'field': 'time',
+                    'timeUnit': 'yearmonthdate',
+                    'title': 'date'
+                },
+                'y': {
+                    'field': 'reward',
+                    'aggregate': 'sum',
+                    'type': 'quantitative',
+                },
+                'color': {
+                    'field': 'total',
+                }
+            },
+               }
+            ]
+        }
+        st.vega_lite_chart(rewards_df, spec, use_container_width=True)
 
         st.write('Last 100 rewards')
         st.dataframe(rewards_df[['reward', 'val_name', 'time']])
