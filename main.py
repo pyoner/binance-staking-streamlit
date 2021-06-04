@@ -1,3 +1,4 @@
+from altair.vegalite.v4.schema.channels import StrokeDash
 import streamlit as st
 # To make things easier later, we're also importing numpy and pandas for
 # working with sample data.
@@ -45,52 +46,22 @@ if address:
     rewards_df = pd.DataFrame.from_records(
         [r.dict() for r in rewards.rewards])
     if len(rewards_df):
-        spec = {
-            'title': 'Validator Rewards',
-            'layer': [
-               {
-                   'mark': {
-                       'type': 'line',
-                   },
-                   'encoding': {
-                       'x': {
-                           'field': 'time',
-                           'timeUnit': 'yearmonthdate',
-                           'title': 'date'
-                       },
-                       'y': {
-                           'field': 'reward',
-                           'type': 'quantitative',
-                       },
+        ch = alt.Chart(rewards_df)
+        rewards_chart = ch.mark_line().encode(
+            alt.X(shorthand='time:T',
+                  timeUnit='yearmonthdate', title='date'),
+            alt.Y(shorthand='reward:Q'),
+            alt.Color(field='val_name', type='nominal', title='Validator')
+        )
 
-                       'color': {
-                           'field': 'val_name',
-                           'type': 'nominal',
-                       }
-                   },
-               }, {
-                   'mark': {
-                       'type': 'line',
-                   },
-                   'encoding': {
-                       'x': {
-                           'field': 'time',
-                           'timeUnit': 'yearmonthdate',
-                           'title': 'date'
-                       },
-                       'y': {
-                           'field': 'reward',
-                           'aggregate': 'sum',
-                           'type': 'quantitative',
-                       },
-                       'color': {
-                           'field': 'total',
-                       }
-                   },
-               }
-            ]
-        }
-        st.vega_lite_chart(rewards_df, spec, use_container_width=True)
+        total_rewards_chart = ch.mark_line().encode(
+            alt.X(shorthand='time:T',
+                  timeUnit='yearmonthdate', title='date'),
+            alt.Y(shorthand='reward:Q', aggregate='sum'),
+            alt.StrokeDash(shorthand='reward:Q', aggregate='sum', legend=None)
+        )
+
+        st.altair_chart(rewards_chart + total_rewards_chart, True)
 
         st.write('Last 100 rewards')
         st.dataframe(rewards_df[['reward', 'val_name', 'time']])
