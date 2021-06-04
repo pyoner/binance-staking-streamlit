@@ -3,6 +3,7 @@ import streamlit as st
 # working with sample data.
 import numpy as np
 import pandas as pd
+import altair as alt
 
 from binance_staking.api import get_balance, get_delegator_rewards, get_operations_by_delegator, get_validators
 
@@ -113,11 +114,8 @@ st.write(
     The calculation is based on the income of this validator 2 days ago.
     It is not compounded and updated every 24 hours.'''
 )
-st.vega_lite_chart(df, {
-    'mark': 'bar',
-
-    'encoding': {
-        'x': {'field': 'apr', 'type': 'quantitative'},
-        'y': {'field': 'name', 'sort': '-x'}
-    }},
-    use_container_width=True)
+apr_chart = alt.Chart(df).mark_bar().encode(
+    x='apr',
+    y='name',
+)
+st.altair_chart(apr_chart, True)
