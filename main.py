@@ -58,14 +58,14 @@ if address:
             ]
         )
 
-        total_rewards_chart = ch.mark_circle(color='#ffba08').encode(
+        total_rewards_chart = ch.mark_point(color='#d00000').encode(
             alt.X(shorthand='time:T',
                   timeUnit='yearmonthdate', title='date'),
             alt.Y(shorthand='reward:Q', aggregate='sum'),
             tooltip=['sum(reward):Q']
         )
 
-        mean_rewards_chart = ch.mark_circle(color='#e9edc9').encode(
+        mean_rewards_chart = ch.mark_point(color='#f48c06').encode(
             alt.X(shorthand='time:T',
                   timeUnit='yearmonthdate', title='date'),
             alt.Y(shorthand='reward:Q', aggregate='mean'),
