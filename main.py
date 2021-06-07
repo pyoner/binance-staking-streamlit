@@ -10,6 +10,8 @@ from binance_staking.api import get_balance, get_delegator_rewards, get_operatio
 
 from app import sidebar
 
+st.set_page_config(page_title='Binance Staking App')
+
 sidebar.init()
 
 st.title('Binance Staking App')
