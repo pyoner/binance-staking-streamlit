@@ -1,6 +1,6 @@
 # Binance Staking App
 
-A [open source application](https://github.com/pyoner/binance-staking-streamlit) to monitor validators and delegators rewards.
+[Open source application](https://github.com/pyoner/binance-staking-streamlit) to monitor validators and delegators rewards.
 
 ## Support me
 
