@@ -8,7 +8,4 @@ Links:
 
 - [buymeacoffee](https://www.buymeacoffee.com/pyoner)
 - [twitter](https://twitter.com/pyoner)
-
-### My BNB wallet address
-
-`bnb15kgkf5t23mkp34e8808jafvkh7ud8p4anzxvt6`
+- [BNB wallet](https://explorer.binance.org/address/bnb15kgkf5t23mkp34e8808jafvkh7ud8p4anzxvt6)

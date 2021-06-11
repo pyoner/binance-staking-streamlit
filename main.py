@@ -28,7 +28,7 @@ else:
 
 if address:
     st.header('Address')
-    st.text(address)
+    st.markdown(f'[{address}](https://explorer.binance.org/address/{address})')
 
     # balance
     st.subheader('Balance')
