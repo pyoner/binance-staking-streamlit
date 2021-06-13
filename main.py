@@ -84,8 +84,16 @@ if address:
             r_chart = rewards_chart + total_rewards_chart + mean_rewards_chart
             st.altair_chart(r_chart, True)
 
-            st.write('Last 100 rewards')
+            st.subheader('Last 100 rewards')
             st.dataframe(rewards_df[['reward', 'val_name', 'time']])
+
+            # rewards by date
+            st.subheader('Daily rewards')
+            st.dataframe(
+                rewards_df.groupby('time').aggregate(
+                    {'reward': 'sum'}
+                ).sort_index(
+                    0, ascending=False))
 
 
 # validators
