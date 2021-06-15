@@ -1,14 +1,12 @@
-from altair.vegalite.v4.schema.channels import StrokeDash
 import streamlit as st
 # To make things easier later, we're also importing numpy and pandas for
 # working with sample data.
-import numpy as np
 import pandas as pd
 import altair as alt
 
-from binance_staking.api import get_balance, get_delegator_rewards, get_operations_by_delegator, get_validators
+from binance_staking.api import get_balance, get_validators
 
-from app import sidebar
+from app import sidebar, rewards, operations
 
 st.set_page_config(page_title='Binance Staking App')
 
@@ -36,64 +34,10 @@ if address:
     st.dataframe(pd.DataFrame.from_records([balance.dict()]))
 
     # operations
-    ops = get_operations_by_delegator(address)
-    if ops.total:
-        ops_df = pd.DataFrame.from_records(
-            [op.dict() for op in ops.operations])
-        st.header('Operations')
-        st.write('Last 100 operations')
-        # operations can be empty
-        # example: https://api.binance.org/v1/staking/chains/bsc/delegators/bnb14yc6ruhwvdv9yr0rvwqjddvkp0eupcktldpxl4/operations?offset=0&limit=100
-        if len(ops_df):
-            st.dataframe(
-                ops_df[['amount', 'operation_type', 'val_name', 'src_val_name', 'time', 'tx_hash']])
+    operations.show(address)
 
     # rewards
-    rewards = get_delegator_rewards(address)
-    if rewards.total:
-        st.header('Rewards')
-        rewards_df = pd.DataFrame.from_records(
-            [r.dict() for r in rewards.rewards])
-        if len(rewards_df):
-            ch = alt.Chart(rewards_df)
-            rewards_chart = ch.mark_line(point=True).encode(
-                alt.X(shorthand='time:T',
-                      timeUnit='yearmonthdate', title='date'),
-                alt.Y(shorthand='reward:Q'),
-                alt.Color(field='val_name', type='nominal', title='Validator'),
-                tooltip=[
-                    alt.Tooltip(shorthand='val_name:N', title='Validator'),
-                    alt.Tooltip(shorthand='reward:Q')
-                ]
-            )
-
-            total_rewards_chart = ch.mark_point(color='#d00000').encode(
-                alt.X(shorthand='time:T',
-                      timeUnit='yearmonthdate', title='date'),
-                alt.Y(shorthand='reward:Q', aggregate='sum'),
-                tooltip=['sum(reward):Q']
-            )
-
-            mean_rewards_chart = ch.mark_point(color='#f48c06').encode(
-                alt.X(shorthand='time:T',
-                      timeUnit='yearmonthdate', title='date'),
-                alt.Y(shorthand='reward:Q', aggregate='mean'),
-                tooltip=['mean(reward):Q']
-            )
-
-            r_chart = rewards_chart + total_rewards_chart + mean_rewards_chart
-            st.altair_chart(r_chart, True)
-
-            st.subheader('Last 100 rewards')
-            st.dataframe(rewards_df[['reward', 'val_name', 'time']])
-
-            # rewards by date
-            st.subheader('Daily rewards')
-            st.dataframe(
-                rewards_df.groupby('time').aggregate(
-                    {'reward': 'sum'}
-                ).sort_index(
-                    0, ascending=False))
+    rewards.show(address)
 
 
 # validators
