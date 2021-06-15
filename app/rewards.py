@@ -9,10 +9,10 @@ def show(address: str):
     rewards = get_delegator_rewards(address)
     if rewards.total:
         st.header('Rewards')
-        rewards_df = pd.DataFrame.from_records(
+        df = pd.DataFrame.from_records(
             [r.dict() for r in rewards.rewards])
-        if len(rewards_df):
-            ch = alt.Chart(rewards_df)
+        if len(df):
+            ch = alt.Chart(df)
             rewards_chart = ch.mark_line(point=True).encode(
                 alt.X(shorthand='time:T',
                       timeUnit='yearmonthdate', title='date'),
@@ -46,13 +46,13 @@ def show(address: str):
             # last 100 rewards
             with col1:
                 st.subheader('Last 100 rewards')
-                st.dataframe(rewards_df[['reward', 'val_name', 'time']])
+                st.dataframe(df[['reward', 'val_name', 'time']])
 
             # rewards by date
             with col2:
                 st.subheader('Daily rewards')
                 st.dataframe(
-                    rewards_df.groupby('time').aggregate(
+                    df.groupby('time').aggregate(
                         {'reward': 'sum'}
                     ).sort_index(
                         0, ascending=False))
