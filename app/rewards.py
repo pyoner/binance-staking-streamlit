@@ -41,13 +41,18 @@ def show(address: str):
             r_chart = rewards_chart + total_rewards_chart + mean_rewards_chart
             st.altair_chart(r_chart, True)
 
-            st.subheader('Last 100 rewards')
-            st.dataframe(rewards_df[['reward', 'val_name', 'time']])
+            col1, col2 = st.beta_columns(2)
+
+            # last 100 rewards
+            with col1:
+                st.subheader('Last 100 rewards')
+                st.dataframe(rewards_df[['reward', 'val_name', 'time']])
 
             # rewards by date
-            st.subheader('Daily rewards')
-            st.dataframe(
-                rewards_df.groupby('time').aggregate(
-                    {'reward': 'sum'}
-                ).sort_index(
-                    0, ascending=False))
+            with col2:
+                st.subheader('Daily rewards')
+                st.dataframe(
+                    rewards_df.groupby('time').aggregate(
+                        {'reward': 'sum'}
+                    ).sort_index(
+                        0, ascending=False))
