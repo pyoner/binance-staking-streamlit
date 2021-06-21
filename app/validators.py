@@ -3,6 +3,17 @@ import pandas as pd
 import altair as alt
 
 from binance_staking.api import get_validators
+from binance_staking.models import ValidatorStatus
+
+status_colors = {
+    ValidatorStatus.active: 'green',
+    ValidatorStatus.inactive: 'purple',
+    ValidatorStatus.in_jail: 'red',
+}
+
+
+def status_color(x: pd.DataFrame):
+    return [f'color: {status_colors[v]}' for v in x]
 
 
 def show():
@@ -18,7 +29,7 @@ def show():
 
         df = pd.DataFrame.from_records(
             [v.dict() for v in validators.validators])
-        st.dataframe(df)
+        st.dataframe(df.style.apply(status_color, axis=1, subset=['status']))
 
         st.header('APR')
         st.write(
